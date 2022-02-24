@@ -50,7 +50,7 @@ import os
 import cv2
 
 #creating a video in 2D
-def create_plots(hz = 20, lMax = 200, video_data, lanes=2, plot_folder):
+def create_plots(video_data, plot_folderhz = 20, lMax = 200, lanes=2):
     path = plot_folder.encode('unicode-escape').decode()
 
     data_sec = video_data
@@ -58,42 +58,42 @@ def create_plots(hz = 20, lMax = 200, video_data, lanes=2, plot_folder):
     tf= int(data_sec.tail(1).t)
 
     for second in range(t0,tf,1):
-    for i in range(0,hz):
-        data_t = data_sec.loc[ #find the data between the time between this frame and the next
-            (data_sec.t >= second + i*(1/hz)) & #the hz is the FPS
-            (data_sec.t <= second + (i+1)*(1/hz))
-        ]
+        for i in range(0,hz):
+            data_t = data_sec.loc[ #find the data between the time between this frame and the next
+                (data_sec.t >= second + i*(1/hz)) & #the hz is the FPS
+                (data_sec.t <= second + (i+1)*(1/hz))
+            ]
 
-        fig, ax = pt.subplots()
-        ax.scatter(x=data_t.x, y=data_t.y, s=10)
+            fig, ax = pt.subplots()
+            ax.scatter(x=data_t.x, y=data_t.y, s=10)
 
-        for j in range(0,len(data_t)):
-            cir = pt.Circle([data_t.iloc[j].x,data_t.iloc[j].y], radius = 1, fill = False, color = 'r')
-            ax.add_patch(cir)
+            for j in range(0,len(data_t)):
+                cir = pt.Circle([data_t.iloc[j].x,data_t.iloc[j].y], radius = 1, fill = False, color = 'r')
+                ax.add_patch(cir)
 
-            if lanes >= 0:
-                #lane of travel
-                pt.hlines(-3.65/2,0,lMax,linestyles='dashed')
-                pt.hlines(3.65/2,0,lMax,linestyles='dashed')
-            if lanes >= 1:
-                #approximate lanes to left and right
-                pt.hlines(3*(-3.65/2),0,lMax,linestyles='dashed')
-                pt.hlines(3*(3.65/2),0,lMax,linestyles='dashed')
-            if lanes >= 2:
-                #approximate lanes to 2 to left and 2 to right
-                pt.hlines(5*(-3.65/2),0,lMax,linestyles='dashed')
-                pt.hlines(5*(3.65/2),0,lMax,linestyles='dashed')
+                if lanes >= 0:
+                    #lane of travel
+                    pt.hlines(-3.65/2,0,lMax,linestyles='dashed')
+                    pt.hlines(3.65/2,0,lMax,linestyles='dashed')
+                if lanes >= 1:
+                    #approximate lanes to left and right
+                    pt.hlines(3*(-3.65/2),0,lMax,linestyles='dashed')
+                    pt.hlines(3*(3.65/2),0,lMax,linestyles='dashed')
+                if lanes >= 2:
+                    #approximate lanes to 2 to left and 2 to right
+                    pt.hlines(5*(-3.65/2),0,lMax,linestyles='dashed')
+                    pt.hlines(5*(3.65/2),0,lMax,linestyles='dashed')
 
-            plt.xlabel('Lateral Distance (m)')
-            plt.ylabel('Longitudinal Distance (m)')
-            plt.ylim(-13,13)
-            plt.xlim(0,lMax)
-            plt.title(str(second)+' to '+str(second+1))
-            plt.gca().invert_yaxis()
+                plt.xlabel('Lateral Distance (m)')
+                plt.ylabel('Longitudinal Distance (m)')
+                plt.ylim(-13,13)
+                plt.xlim(0,lMax)
+                plt.title(str(second)+' to '+str(second+1))
+                plt.gca().invert_yaxis()
 
-            plt.savefig(os.path.join(path,"time"+format(second,"03d")+format(i,"03d")+".png"),bbox_inches='tight')
-            plt.show()
-            plt.close()
+                plt.savefig(os.path.join(path,"time"+format(second,"03d")+format(i,"03d")+".png"),bbox_inches='tight')
+                plt.show()
+                plt.close()
 
 
 def video_publisher(plot_folder,name):

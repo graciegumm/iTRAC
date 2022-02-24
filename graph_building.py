@@ -48,7 +48,11 @@ import networkx as nx
 import os
 
 
-db2 = s.initializeDBC_Cantools('../strym/strym/dbc/toyota_rav4_hybrid.dbc')
+try:
+    db2 = s.initializeDBC_Cantools('/strym/strym/dbc/toyota_rav4_hybrid.dbc')
+    print('Loaded DBC from: /strym/strym/dbc/toyota_rav4_hybrid.dbc')
+except:
+    print('make sure to import and/or locate your dbc file')
 
 def setDBC(filePath):
     '''Initialize the DBC from strym, give the filepath to your dbc file.'''
@@ -104,7 +108,7 @@ def allRadar(data):
     radar detections from a Toyota RAV4. Sorted by Time by default.'''
     bigFrame = pd.DataFrame()
 
-    for i in range(384,399):
+    for i in range(384,400):
         temp = trackRadar(i,data)
         bigFrame = pd.concat([temp,bigFrame])
 
