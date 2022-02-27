@@ -279,16 +279,16 @@ def getPath(path, J):
 
     return df
 
-def getPathDfs(p):
+def getPathDfs(p,G):
     """This function gets a list of dataframes, each correstponding to a trajectory
-    of a vehicle tracked from the drive with the ITCAN approach. p is the list of
+    of a vehicle tracked from the drive with the iTRAC approach. p is the list of
      the lists of nodes in graph G which correspond to a vehicle's trajectory.
     It is the output from the SSP method."""
 
     dfs = []
     for i in p[0:len(p)-1]:
         print(len(dfs))
-        mydf = getPath(i,F.G)
+        mydf = getPath(i,G.G)
         dfs.append(mydf)
 
     return dfs
