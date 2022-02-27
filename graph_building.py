@@ -81,7 +81,7 @@ def trackRadar(i,data):
     relv = s.convertData(i,4,data,db2)
     relv=relv.reset_index(drop=True)
 
-    score = convertData(i+16,'SCORE',data,db2)
+    score = s.convertData(i+16,'SCORE',data,db2)
     score = score.reset_index(drop=True)
 
     lon = lon.rename(columns={"Message": "Longitude"})
