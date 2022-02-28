@@ -274,7 +274,7 @@ def getPath(path, J):
             df = df.append(pd.DataFrame([[J.nodes[i]['obj'].t, J.nodes[i]['obj'].x, J.nodes[i]['obj'].y,\
                                           J.nodes[i]['obj'].rv, J.nodes[i]['obj'].a,J.nodes[i]['obj'].score,\
                                         J.nodes[i]['obj'].track]]\
-                                        ,columns=['t','x','y','rv','a','s','track'],index = [J.nodes[i]['obj'].id]))
+                                        ,columns=['Time','SpaceGap','Latitude','Rel_vel','Rel_accel','Score','Track'],index = [J.nodes[i]['obj'].id]))
 
 
     return df

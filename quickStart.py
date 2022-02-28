@@ -1,4 +1,4 @@
-import iTRAC as it
+import ../iTRAC as it
 
 
 #replace with your filepath
