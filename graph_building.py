@@ -32,7 +32,6 @@ __author__ = 'Mathew Nice'
 __email__  = 'matthew.nice@vanderbilt.edu'
 
 ## general import for data manipulation, file gathering
-
 import numpy as np
 import matplotlib.pyplot as pt
 import csv
@@ -47,10 +46,15 @@ import strym as s
 import networkx as nx
 import os
 
+#adding below for exporting to excel
+import xlwt
+
+
 
 try:
-    db2 = s.initializeDBC_Cantools('/strym/strym/dbc/toyota_rav4_hybrid.dbc')
-    print('Loaded DBC from: /strym/strym/dbc/toyota_rav4_hybrid.dbc')
+    dbc_location = '/home/ggrumm/strym/strym/dbc/toyota_rav4_hybrid.dbc'
+    db2 = s.initializeDBC_Cantools(dbc_location)
+    print('Loaded DBC from: {}'.format(dbc_location))
 except:
     print('make sure to import and/or locate your dbc file')
 
@@ -274,7 +278,7 @@ def getPath(path, J):
             df = df.append(pd.DataFrame([[J.nodes[i]['obj'].t, J.nodes[i]['obj'].x, J.nodes[i]['obj'].y,\
                                           J.nodes[i]['obj'].rv, J.nodes[i]['obj'].a,J.nodes[i]['obj'].score,\
                                         J.nodes[i]['obj'].track]]\
-                                        ,columns=['Time','SpaceGap','Latitude','Rel_vel','Rel_accel','Score','Track'],index = [J.nodes[i]['obj'].id]))
+                                        ,columns=['t','x','y','rv','a','s','track'],index = [J.nodes[i]['obj'].id]))
 
 
     return df
@@ -286,9 +290,34 @@ def getPathDfs(p,G):
     It is the output from the SSP method."""
 
     dfs = []
+    file_list = [] #will be populated with names of each trajectory csv file
+    n = 1
     for i in p[0:len(p)-1]:
         print(len(dfs))
         mydf = getPath(i,G.G)
+        mydf.to_csv('trajectory_{}.cvs'.format(n)) #creates file for each trajectory
+        file_list.append('trajectory_{}.cvs'.format(n)) #holds the name of each trajectory
         dfs.append(mydf)
+        n += 1
+     
+    #below will combine the csv files into one excel workbook separated by sheets
+    wb = xlwt.Workbook()
+    for csvfile in file_list:
+        ws = wb.add_sheet(csvfile)
+        with open(csvfile, 'rt') as f:
+            reader = csv.reader(f)
+            for r, row in enumerate(reader):
+                for c, col in enumerate(row):
+                    ws.write(r, c, col)
+        wb.save('output.xls')
+    print('Writing output to output.xls....')
+
 
     return dfs
+
+
+
+
+
+
+
