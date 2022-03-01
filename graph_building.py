@@ -295,8 +295,8 @@ def getPathDfs(p,G):
     for i in p[0:len(p)-1]:
         print(len(dfs))
         mydf = getPath(i,G.G)
-        mydf.to_csv('trajectory_{}.cvs'.format(n)) #creates file for each trajectory
-        file_list.append('trajectory_{}.cvs'.format(n)) #holds the name of each trajectory
+        mydf.to_csv('trajectory_{}.csv'.format(n)) #creates file for each trajectory
+        file_list.append('trajectory_{}.csv'.format(n)) #holds the name of each trajectory
         dfs.append(mydf)
         n += 1
      
