@@ -45,9 +45,9 @@ import math
 import strym as s
 import networkx as nx
 import os
+import glob
 
-#adding below for exporting to excel
-import xlwt
+
 
 
 
@@ -290,34 +290,27 @@ def getPathDfs(p,G):
     It is the output from the SSP method."""
 
     dfs = []
-    file_list = [] #will be populated with names of each trajectory csv file
-    n = 1
+    #file_list = [] #will be populated with names of each trajectory csv file
+    ID = 1
     for i in p[0:len(p)-1]:
         print(len(dfs))
         mydf = getPath(i,G.G)
-        mydf.to_csv('trajectory_{}.csv'.format(n)) #creates file for each trajectory
-        file_list.append('trajectory_{}.csv'.format(n)) #holds the name of each trajectory
+        a = 0
+        number = len(mydf.index)
+        ID_list = []
+        while a < number:    
+            ID_list.append(ID)
+            a += 1
+        mydf['Trajectory_ID'] = ID_list
+        mydf.to_csv('trajectory_{}.csv'.format(ID)) #creates file for each trajectory
+        #file_list.append('trajectory_{}.csv'.format(ID)) #holds the name of each trajectory
         dfs.append(mydf)
-        n += 1
-     
-    #below will combine the csv files into one excel workbook separated by sheets
-    wb = xlwt.Workbook()
-    for csvfile in file_list:
-        ws = wb.add_sheet(csvfile)
-        with open(csvfile, 'rt') as f:
-            reader = csv.reader(f)
-            for r, row in enumerate(reader):
-                for c, col in enumerate(row):
-                    ws.write(r, c, col)
-        wb.save('output.xls')
-    print('Writing output to output.xls....')
+        ID += 1
 
-
+    joined_files = os.path.join('/home/ggrumm/Documents/iTRAC-Gracie', 'trajectory_*.csv')
+    joined_list = glob.glob(joined_files)
+    df = pd.concat(map(pd.read_csv, joined_list), ignore_index=True)
+    df.to_csv('output.csv')     
     return dfs
-
-
-
-
-
 
 
