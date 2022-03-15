@@ -1,7 +1,4 @@
 import iTRAC as it
-
-
-#below is stuff I have added
 import numpy as np
 import matplotlib.pyplot as pt
 import csv
@@ -15,13 +12,11 @@ import math
 import strym as s
 import networkx as nx
 import os
-
-import xlwt #for exporting as excel book
-#end of stuff I have added
+import glob
 
 
 #replace with your filepath
-data = pd.read_csv('/media/ggrumm/Extreme SSD/2021-08-04-14-53-43_2T3MWRFVXLW056972_CAN_Messages.csv')
+data = pd.read_csv('/home/ggrumm/Documents/iTRAC-Gracie/2021-08-06-10-31-30_2T3H1RFV8LC057037_CAN_Messages.csv')
 
 #replace with your filepath
 db2 = s.initializeDBC_Cantools('/home/ggrumm/strym/strym/dbc/toyota_rav4_hybrid.dbc')
@@ -31,3 +26,7 @@ radarData = it.allRadar(data)
 G = it.myGraph(radarData,dt=0.5)
 p = it.SSP(G.G)
 dfs = it.getPathDfs(p, G) #added G as parameter
+
+
+
+
