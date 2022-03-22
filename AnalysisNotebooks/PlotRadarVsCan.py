@@ -75,6 +75,8 @@ such that each vehicle can be analyzed and plotted separately
 times = []
 dists = []
 indicies = []
+x_dists = []
+y_dists = []
 for i in trajectory_IDs:
     individual_indicies = []
     for a in range(len(trajectory_number)):    
@@ -85,11 +87,17 @@ for i in trajectory_IDs:
 for veh in indicies:
     individual_times = []
     individual_dists = []
+    individual_x = []
+    individual_y =  []
     for index in veh:
         individual_times.append(radar_time[index])
         individual_dists.append(radar_dist[index])
+        individual_x.append(radar_dist_x[index])
+        individual_y.append(radar_dist_y[index])
     times.append(individual_times)
     dists.append(individual_dists)
+    x_dists.append(individual_x)
+    y_dists.append(individual_y)
     
 '''
 Now we have the following lists to work with each vehicle trajectory
