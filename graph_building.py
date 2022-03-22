@@ -306,7 +306,7 @@ def getPathDfs(p,G):
         dfs.append(mydf)
         ID += 1
 
-    joined_files = os.path.join('/home/ggrumm/Documents/iTRAC-Gracie', 'trajectory_*.csv')
+    joined_files = os.path.join('/home/ggrumm/Documents/iTRAC-Gracie', 'trajectory_*.csv') #edit location for location that quickStart.py is held
     joined_list = glob.glob(joined_files)
     df = pd.concat(map(pd.read_csv, joined_list), ignore_index=True)
     df.sort_values("t", axis=0, ascending=True,inplace=True, na_position='first')
