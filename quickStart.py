@@ -25,7 +25,7 @@ db2 = s.initializeDBC_Cantools('/home/ggrumm/strym/strym/dbc/toyota_rav4_hybrid.
 radarData = it.allRadar(data)
 G = it.myGraph(radarData,dt=0.5)
 p = it.SSP(G.G)
-dfs = it.getPathDfs(p, G) #added G as parameter
+dfs = it.getPathDfs(p, G)
 
 
 
