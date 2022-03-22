@@ -1,3 +1,4 @@
+#Initial import statements
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -5,9 +6,11 @@ from pandas import *
 from matplotlib.pyplot import figure
 import math
 
-radar = read_csv('sortedFile.csv')
-can = read_csv('CAN_lead_dist_output.csv')
+# Reads in the CSV files for the radar and CAN messages
+radar = read_csv('output.csv') #Change to match the file name and location of the radar trajectories
+can = read_csv('CAN_lead_dist_output.csv') #Change to match the file name and location of the lead distances recorded from CAN
 
+# Stores relevant values in the radar and CAN data as lists
 trajectory_number=radar['Trajectory_ID'].tolist()
 trajectory_count = (len(np.unique(trajectory_number)))
 trajectory_IDs = list(range(1, trajectory_count+1))
@@ -19,14 +22,15 @@ radar_dist_x = radar['x'].tolist()
 can_dist = can['Message'].tolist()
 radar_dist_y = radar['y'].tolist()
 
+# Converts the times recorded such that the first time is set to zero
 for t in radar_timeraw:
     time = t - 1628251713
     radar_time.append(time)
-
 for t in can_timeraw:
     time = t - 1628251713
     can_time.append(time)
 
+# Creates a list storing the magnitude of the radar distance, from the x and y components recorded
 i = 0
 radar_dist = []
 while i < 18412:
@@ -39,6 +43,7 @@ From here on, the radar_dist will be primarily used, as this is the magnitude of
 of the radar distance.
 '''
 
+# Plots the radar distances (in lump) and the CAN lead distances as a function of time
 fig = plt.figure(figsize=(17, 8))
 plt.title("Comparision of ALL Radar Trajectory Distances and CAN Lead Distances")
 plt.scatter(radar_time, radar_dist, marker='.',linewidths=0.1,label='Radar')
@@ -63,10 +68,13 @@ plt.xlabel("Time (s)")
 plt.ylabel("Lead Distance")
 plt.legend()
 
+'''
+The following subset of code creates nested lists that separate the lump radar data by each vehicle recorded,
+such that each vehicle can be analyzed and plotted separately
+'''
 times = []
 dists = []
 indicies = []
-
 for i in trajectory_IDs:
     individual_indicies = []
     for a in range(len(trajectory_number)):    
@@ -100,18 +108,14 @@ An example of using this notation to plot data is shown below
 
 # veh_list needs to be modified for what you want to plot. Input the index of each trajectory you want to plot
 # For instance, to plot Trajectory 1 only, veh_list=[0]. To plot Trajectories 2 and 7, veh_list=[1,6].
+veh_list = [5,6,7,8,9,10]
 
-veh_list = [5,6,7,8,9,10] #@@FIXME
-
+# Plots the radar distances for each vehicle's index listed in veh_list and the CAN lead distances as a function of time
 fig = plt.figure(figsize=(17, 8))
 plt.xlabel("Time (s)")
 plt.ylabel("Lead Distance")
 plt.title("Comparision of INDIVIDUAL Radar Trajectory Distances and CAN Lead Distances")
 plt.scatter(can_time, can_dist, marker='.',linewidths=0.1,label='CAN')
-
-#input loop to plot times and dists for vehicles in veh list
-#for each i in veh_list, we want to plot times[i], dists[i]
-
 for veh in veh_list:
     plt.scatter(times[veh], dists[veh], marker='.',linewidths=0.1,label='Radar #{}'.format(veh+1))
 plt.legend()
