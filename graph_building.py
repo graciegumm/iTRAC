@@ -287,10 +287,10 @@ def getPathDfs(p,G):
     """This function gets a list of dataframes, each correstponding to a trajectory
     of a vehicle tracked from the drive with the iTRAC approach. p is the list of
      the lists of nodes in graph G which correspond to a vehicle's trajectory.
-    It is the output from the SSP method."""
+    It is the output from the SSP method. Additionally, csv files containing each
+    vehicle's trajectory are exported locally, in addition to a lump trajectory file."""
 
     dfs = []
-    #file_list = [] #will be populated with names of each trajectory csv file
     ID = 1
     for i in p[0:len(p)-1]:
         print(len(dfs))
@@ -303,14 +303,12 @@ def getPathDfs(p,G):
             a += 1
         mydf['Trajectory_ID'] = ID_list
         mydf.to_csv('trajectory_{}.csv'.format(ID)) #creates file for each trajectory
-        #file_list.append('trajectory_{}.csv'.format(ID)) #holds the name of each trajectory
         dfs.append(mydf)
         ID += 1
 
     joined_files = os.path.join('/home/ggrumm/Documents/iTRAC-Gracie', 'trajectory_*.csv')
     joined_list = glob.glob(joined_files)
     df = pd.concat(map(pd.read_csv, joined_list), ignore_index=True)
+    df.sort_values("t", axis=0, ascending=True,inplace=True, na_position='first')
     df.to_csv('output.csv')     
     return dfs
-
-
