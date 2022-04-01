@@ -24,10 +24,10 @@ radar_dist_y = radar['y'].tolist()
 
 # Converts the times recorded such that the first time is set to zero
 for t in radar_timeraw:
-    time = t - 1628251713
+    time = t - (min(min(radar_timeraw), min(can_timeraw)))
     radar_time.append(time)
 for t in can_timeraw:
-    time = t - 1628251713
+    time = t - (min(min(radar_timeraw), min(can_timeraw)))
     can_time.append(time)
 
 # Creates a list storing the magnitude of the radar distance, from the x and y components recorded
