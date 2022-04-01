@@ -33,7 +33,7 @@ for t in can_timeraw:
 # Creates a list storing the magnitude of the radar distance, from the x and y components recorded
 i = 0
 radar_dist = []
-while i < 18412:
+while i < len(radar_dist_x):
     dist = math.sqrt(((radar_dist_x[i])**2) + ((radar_dist_y[i])**2))
     radar_dist.append(dist)
     i+=1
